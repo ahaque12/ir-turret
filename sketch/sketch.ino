@@ -97,6 +97,7 @@ int pitchMax = 175; // this sets the maximum angle of the pitch servo to prevent
 int pitchMin = 10; // this sets the minimum angle of the pitch servo to prevent it from crashing, it should remain above 0, and be less than the pitchMax
 
 bool reverseMode = false; // this variable is used to reverse the direction of the yaw motor when the turret is asked to fire. 
+int safeDistance = 30; // this variable is used to set the distance in centimeters that the ultrasonic sensor will check for objects before firing. If an object is detected within this distance, the turret will not fire.
 
 
 //////////////////////////////////////////////////
@@ -176,13 +177,22 @@ void loop() {
               break;
             
             case ok: //firing routine 
-              if (reverseMode) reverse();
-              fire();
-              //Serial.println("FIRE");
+              if (reverseMode) 
+                  reverse();
+
+              if (safeToFire())
+                  fire();
+              else {
+                  shakeHeadNo();
+              }
               break;
               
             case star:
-              fireAll();
+               if (safeToFire())
+                  fireAll();
+              else {
+                  shakeHeadNo();
+              }
               delay(50);
               break;
 
@@ -202,6 +212,26 @@ void loop() {
     }
     delay(5);
 }
+
+
+bool safeToFire() {
+    // Check if the ultrasonic sensor detects an object within 10 cm.
+
+    // store ultrasonic read distance in variable
+    int distance = ultrasonic.read();
+    Serial.println("Distance: " + String(distance) + " cm");
+
+    if (distance > safeDistance) {
+        Serial.println("SAFE TO FIRE");
+        return true;
+    }
+    else {
+        Serial.println("NOT SAFE TO FIRE");
+        return false;
+    }
+
+}
+
 
 
 void reverse(){

@@ -11,7 +11,5 @@ Press **1** to enter/exit reverse mode. In reverse mode, everytime the fire butt
 ## Figure Eight Dance
 Press **8** to to do a fun figure 8 dance.
 
-# Todo
-
 ## Safety sensor
-Refuse to fire when something is too close.
+Refuse to fire when an object is too close.
