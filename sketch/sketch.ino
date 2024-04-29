@@ -69,6 +69,7 @@
 // Sensor pins
 #define TRIGGER_PIN  7  // Arduino pin tied to trigger pin on the ultrasonic sensor.
 #define ECHO_PIN     8  // Arduino pin tied to echo pin on the ultrasonic sensor.
+#define BUZZER_PIN   6  // Arduino pin tied to the buzzer.
 
 //////////////////////////////////////////////////
           //  PINS AND PARAMETERS  //
@@ -110,6 +111,7 @@ void setup() {
     pitchServo.attach(11); //attach PITCH servo to pin 11
     rollServo.attach(12); //attach ROLL servo to pin 12
 
+    pinMode(BUZZER_PIN, OUTPUT); //set the buzzer pin as an output
     // Just to know which program is running on my microcontroller
     Serial.println(F("START " __FILE__ " from " __DATE__ "\r\nUsing library version " VERSION_IRREMOTE));
 
@@ -204,6 +206,10 @@ void loop() {
                 shakeHeadNo();
               break;
 
+            case cmd2:
+              playMusic();
+              break;
+
             case cmd8:
               figureEight();
               break;
@@ -213,6 +219,18 @@ void loop() {
     delay(5);
 }
 
+
+void playMusic(){
+  Serial.println("PLAY MUSIC");
+  //tone(BUZZER_PIN, 90);
+  for (int i=0; i<=30;i++) {
+      digitalWrite(BUZZER_PIN, LOW);
+      delay(10);
+      //noTone(BUZZER_PIN);
+      digitalWrite(BUZZER_PIN, HIGH);
+      delay(10);
+  }
+}
 
 bool safeToFire() {
     // Check if the ultrasonic sensor detects an object within 10 cm.

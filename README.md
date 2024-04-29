@@ -13,3 +13,6 @@ Press **8** to to do a fun figure 8 dance.
 
 ## Safety sensor
 Refuse to fire when an object is too close.
+
+## Buzzer music
+Press **1** to sound the buzzer. *TODO* add music.
